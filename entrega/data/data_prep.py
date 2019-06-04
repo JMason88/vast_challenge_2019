@@ -62,7 +62,7 @@ print(sensors_timed.head(10))
 
 print(50 * '-')
 print('Saving results... \n')
-sensors_timed.to_csv('salidas/sensors.csv')
+sensors_timed.to_csv('salidas/sensors.csv', index=False)
 print(43 * ' ' + '...DONE')
 print(50 * '-')
 
