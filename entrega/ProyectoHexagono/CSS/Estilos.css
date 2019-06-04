@@ -1,0 +1,49 @@
+﻿.hexagonoLimite {
+    fill: transparent;
+
+    stroke: #d0c4c4;
+    stroke-width: 1;
+    stroke-opacity: 1;
+}
+.hexagonoCentro {
+    fill: black;
+}
+.Hospital {
+    fill: #810808;
+    stroke: #e6e4e4;
+    stroke-opacity: 0.5;
+    stroke-width: 1;
+}
+.CentralNuclear {
+    fill: black;
+}
+.CentralNuclearPar {
+    fill: yellow;
+}
+.SensorEstatico {
+
+    stroke: black;
+    stroke-opacity: 1;
+    stroke-width: 1;
+}
+.SensorMovil {
+    
+    fill-opacity: 1;
+    
+}
+
+.Fondo {
+    fill: transparent;
+    stroke-opacity : 0.1;
+       
+    }
+.LineaAxis {
+    stroke: black;
+    stroke-opacity: 0.4;
+    stroke-width: 1;
+}
+.LineaAxisInterna {
+    stroke: black;
+    stroke-opacity: 0.4;
+    stroke-width: 1;
+}

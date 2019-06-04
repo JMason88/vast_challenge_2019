@@ -1,0 +1,113 @@
+﻿
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+</style>
+
+<html>
+<body>
+    <!-- dependencies -->
+    <div id="divHexa"></div>
+    
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/CubeHexa.js"></script>
+    <script src="js/Ciudad.js"></script>
+    <!-- d3 code -->
+
+
+    <script>
+        Pintarciudad();
+        var flat = Layout(layout_flat, Point(5, 5), Point(100, 100));
+        var hCentro = Hex(0, 0, 0);
+        var hpcentro = hex_to_pixel(flat, hCentro);
+        console.log(hpcentro);
+        var hVecino = Hex(0, +1, -1);
+        var hpVecino = hex_to_pixel(flat, hVecino);
+        console.log(hpVecino);
+        var pos = DibujarHexgono(5, hpcentro.x, hpcentro.y, 's');
+    
+        var canvas = d3.select("#divHexa").html("").append("svg").attr("width", 1000).attr("height", 600);
+        var boca = canvas.append("polygon")
+            .attr("points", pos)
+            .style("fill", "yellow")
+
+            .style("stroke", "blue")
+            .style("stroke - width", "2");
+        pos = DibujarHexgono(5, hpVecino.x, hpVecino.y, 's');
+
+        var hpVecino;
+        
+        canvas.append("polygon")
+            .attr("points", pos)
+            .style("fill", "yellow")
+
+            .style("stroke", "blue")
+            .style("stroke - width", "2");
+
+        var points = [Point(247, 232),
+        Point(206, 232),
+        Point(209, 149),
+        Point(157, 131),
+        Point(104, 0),
+        Point(42, 6),
+        Point(50, 59),
+        Point(87, 68),
+        Point(101, 139),
+        Point(70, 196),
+        Point(0, 202),
+        Point(0, 227),
+        Point(50, 231),
+        Point(35, 263),
+        Point(15, 351),
+        Point(31, 392),
+        Point(70, 427),
+        Point(106, 443),
+        Point(149, 468),
+        Point(182, 476),
+        Point(228, 471),
+        Point(247, 474),
+        Point(247, 232)
+        ];
+
+        var desde = pixel_to_hex(flat, points[0]);
+        var hexOrig = desde;
+        var hasta = null;
+        for (var f = 1; f < points.length; f++) {
+            hasta = pixel_to_hex(flat, points[f]);
+            hasta = hex_round(hasta);
+            
+            desde = hex_round(desde);
+
+            var hexLinea = hex_linedraw(desde, hasta);
+            for (var i = 0; i < hexLinea.length; i++) {
+                var hpActual = hex_to_pixel(flat, hexLinea[i]);
+                pos = DibujarHexgono(5, hpActual.x, hpActual.y, 's');
+                var boca = canvas.append("polygon")
+                    .attr("points", pos)
+                    .style("fill", "yellow")
+
+                    .style("stroke", "blue")
+                    .style("stroke - width", "2");
+                
+            }
+            desde = hasta;
+        }
+        var hexLinea = hex_linedraw(hexOrig, hasta);
+        for (var i = 0; i < hexLinea.length; i++) {
+            var hpActual = hex_to_pixel(flat, hexLinea[i]);
+            pos = DibujarHexgono(5, hpActual.x, hpActual.y, 's');
+            var boca = canvas.append("polygon")
+                .attr("points", pos)
+                .style("fill", "yellow")
+
+                .style("stroke", "blue")
+                .style("stroke - width", "2");
+            
+        }
+
+
+
+    </script>
+</body>
+</html>

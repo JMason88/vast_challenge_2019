@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+<html >
+<head>
+    <meta charset="utf-8" />
+    <title>Cambas</title>
+</head>
+<body>
+    <svg width="500px" height="500px">
+        <circle cx="250" cy="100" r="40"></circle>
+    </svg>
+</body>
+</html>

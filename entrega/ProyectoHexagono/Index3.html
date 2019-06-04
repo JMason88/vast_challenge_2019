@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+path {
+  fill: #ccc;
+  stroke: #fff;
+  stroke-width: .5px;
+}
+  
+circle {
+  fill: #fff;
+  fill-opacity: 0.4;
+  stroke: #111;
+}
+
+path.active {
+  fill: pink;
+}
+circle.active {
+  fill: blue;
+}
+
+
+</style>
+<html>
+<body>
+    <div id="divHexa"></div>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+
+    <script src="js/main.js"></script>
+    <script src="js/Pintar.js"></script>
+    <script>
+        var width = 800,
+            height = 800;
+        var svg = d3.select("#map")
+            .append("svg")
+            .attr("width", width)
+            .attr("height", height);
+        var anchoSvg = 1000;
+        var altoSvg = 600;
+
+
+        var canvasTriangulo = d3.select("#divHexa").html("").append("svg").attr("width", anchoSvg).attr("height", altoSvg);
+        var boca = canvasTriangulo.append("polygon")
+            .attr("points", pos)
+            .style("fill", "transparent")
+            .style("opacity", "0.3")
+            .style("stroke", "blue")
+            .style("stroke - width", "2");
+        //var points = "493.9744370099 463.3726475015, 412.1594356500 464.2697964661, 417.5509558599 298.3307853419, 313.9139561400 261.1892016254, 208.4797830001 0.0000000000, 83.8757602099 11.9811560378, 100.6493786599 117.4153291706, 174.9325461000 136.5851788323, 202.1820081400 278.6927121036, 140.7785834501 392.5136944633, 0.0000000000 404.4948505014, 0.0000000000 453.9171191577, 100.3421818201 461.4053416811, 70.3892917300 525.8040553849, 29.9528901000 701.0284624387, 61.4034247000 784.8965547040, 139.2809389399 853.7882019203, 212.6655196801 886.7363810245, 298.1271056900 935.3319499150, 364.2630870201 951.4346236296, 456.8534608800 942.8081912812, 494.2059129501 947.2364265539, 493.9744370099 463.3726475015";
+        var points = "494 463 ,412 464 ,418 298 ,314 261 ,208 0 ,84 12 ,101 117 ,175 137 ,202 279 ,141 393 ,0 404 ,0 454 ,100 461 ,70 526 ,30 701 ,61 785 ,139 854 ,213 887 ,298 935 ,364 951 ,457 943 ,494 947 ,494 463";
+        var arrayPoints = points.split(",");
+        //HexagonosBosteros();
+        console.log(arrayPoints);
+        HexagonosBosteros(anchoSvg, altoSvg, canvas = canvasTriangulo);
+        var pun = DibujarHexgono(lado = 100, posX = 500, posY = 300, 'Si', 20);
+        var boca = canvasTriangulo.append("polygon")
+            .attr("points", points)
+            .style("fill", "yellow")
+            .style("opacity", "0.3")
+
+        var boca = canvasTriangulo.append("polygon")
+            .attr("points", pun)
+            .style("fill", "yellow")
+            //.style("opacity", "0.3")
+            .style("stroke", "blue")
+            .style("stroke - width", "2");
+    </script>
+</body>
+</html>

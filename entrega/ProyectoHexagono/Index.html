@@ -1,0 +1,79 @@
+﻿
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<style>
+</style>
+
+<html>
+<body>
+    <link type="text/css" rel="stylesheet" href="css/Estilos.css" />
+    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css" media="screen" />
+    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap-theme.css" media="screen" />
+
+    <!-- dependencies -->
+
+    <div id="divHexa"></div>
+    <div id="divBarrasTomas" style="position:absolute; left: 60%; top: 0;"></div>
+    <div class="col-lg-12">
+        <div id="divReloj" class="col-lg-1">    </div>
+
+        <div class="form-check col-lg-1">
+            <input type="checkbox" class="form-check-input" id="Parar">
+            <label class="form-check-label" for="chkStop">Parar</label>
+        </div>
+
+        <div class="col-lg-10">
+
+            <div class="form-group">
+
+                <input id="rsTiempo" class="form-control-range" type="range" min="1" max="720" value="1" oninput="MostrarMomento(this.value)" onchange="ReiniciarTimer(this.value)">
+            </div>
+        </div>
+    </div>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <button class="btn btn-outline-secondary" type="button" onclick="Volver()"><<</button>
+            <button class="btn btn-outline-secondary" type="button" onclick="Avanzar()">>></button>
+        </div>
+        <input type="text" id="TiempoMoverse" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">
+    </div>
+
+
+
+    <script src="js/d3.v5.min.js"></script>
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/d3-array.v2.min.js"></script>
+    <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <!--<script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>-->
+    <!--<script src="https://d3js.org/d3.v5.min.js"></script>-->
+
+    <script src="js/kriging.js"></script>
+    <script src="js/Globales.js"></script>
+    <script src="js/colorGradient.js"></script>
+    <script src="js/Datos.js"></script>
+    <script src="js/CubeHexa.js"></script>
+    <script src="js/Mapa.js"></script>
+    <script src="js/Ciudad.js"></script>
+    <script src="js/Pintar.js"></script>
+    <script src="js/haversineDistance.js"></script>
+    <script src="js/barrasMedidores.js"></script>
+
+
+
+
+    <script src="js/main.js"></script>
+    <!-- d3 code -->
+
+
+    <script>
+        /* alto= ancho*0.84*/
+        //var margenes= { "top": 20, "right": 20, "button": 20, "left": 20 }
+
+        Iniciar();
+
+
+
+    </script>
+</body>
+</html>

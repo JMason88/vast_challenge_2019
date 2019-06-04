@@ -1,0 +1,93 @@
+﻿
+<!DOCTYPE html>
+<meta charset="utf-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<style>
+</style>
+
+<html>
+<body>
+    <link type="text/css" rel="stylesheet" href="css/Estilos.css" />
+    <!-- dependencies -->
+    <div id="divHexa"></div>
+
+    <canvas id="canvas" width="500" height="500"></canvas>
+    <script src="js/d3.v5.min.js"></script>
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/d3-array.v2.min.js"></script>
+    <!--<script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>-->
+    <!--<script src="https://d3js.org/d3.v5.min.js"></script>-->
+    <script src="js/Globales.js"></script>
+    <script src="js/colorGradient.js"></script>
+    <script src="js/Datos.js"></script>
+    <script src="js/CubeHexa.js"></script>
+    <script src="js/Ciudad.js"></script>
+    <script src="js/Pintar.js"></script>
+    <script src="js/haversineDistance.js"></script>
+
+    <script src="js/kmeans.js"></script>
+    <script src="js/main.js"></script>
+    <!-- d3 code -->
+
+
+    <script>
+        var data = [
+            [6, 5],
+            [9, 10],
+            [10, 1],
+            [5, 5],
+            [7, 7],
+            [4, 1],
+            [10, 7],
+            [6, 8],
+            [10, 2],
+            [9, 4],
+            [2, 5],
+            [9, 1],
+            [10, 9],
+            [2, 8],
+            [1, 1],
+            [6, 10],
+            [3, 8],
+            [2, 3],
+            [7, 9],
+            [7, 7],
+            [3, 6],
+            [5, 8],
+            [7, 5],
+            [10, 9],
+            [10, 9]
+        ];
+
+        // var ListaSensores = MedicionesEstaticosPorToma(toma);
+
+        //for (var i = 0; i < ListaSensores.length; i++) {
+
+
+        //    var x = ListaSensores[i].x;;
+        //    var y = ListaSensores[i].y;
+        //    var xTransf;
+        //    var yTransf;
+
+        //    var distancia = obtenerDistanciaMetrosEscalada(x, y, scaleX, scaleY);
+        //    //console.log("distancia " + distancia);
+        //    xTransf = distancia[0];
+        //    yTransf = distancia[1];
+        //    //var p = data.push([xTransf, yTransf]);
+        //    //var clase = 'SensorEstatico';
+
+
+
+        //}
+
+        console.log('avcacds', data);
+        var kmeans = new KMeans({
+            canvas: document.getElementById('canvas'),
+            data: data,
+            k: 3
+        });
+
+
+    </script>
+</body>
+</html>

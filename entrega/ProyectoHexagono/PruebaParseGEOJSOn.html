@@ -1,0 +1,113 @@
+﻿
+<!DOCTYPE html>
+<meta charset="utf-8">
+<configuration>
+    <system.webServer>
+        <httpProtocol>
+            <customHeaders>
+                <add name="Access-Control-Allow-Origin" value="*" />
+            </customHeaders>
+        </httpProtocol>
+    </system.webServer>
+</configuration>
+<style>
+</style>
+<style href="css/Estilos.css"></style>
+<html>
+<body>
+    <link href="css/Estilos.css" type="text/css" rel="stylesheet" />
+    <!-- dependencies -->
+    <div id="divHexa"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.3.0/d3.min.js"></script>
+    <!-- d3 code -->
+
+
+    <script>
+        var mapa = 'http://localhost/ProyectoHexagono/Mapas/StHimark.geojson';
+        //var mapa = 'http://localhost/ProyectoHexagono/Mapas/gunma.geojson';
+        /*$.getJSON(mapa, function (data) {
+            console.log(data);
+        });*/
+        //プロジェクション設定
+        //プロジェクション設定
+        var projection = d3
+            .geoMercator() //投影法の指定
+            .scale(160)	//スケール（ズーム）の指定
+        //.rotate([-0.25, 0.25, 0]) //地図を回転する　[x,y,z]
+        //.center([139.0032936, 36.3219088]); //中心の座標を指定
+
+        //パスジェネレーター生成
+        var path = d3.geoPath().projection(projection);
+
+        //地図用のステージ(SVGタグ)を作成
+        var map = d3.select("body")
+            .append("svg")
+            .attr("width", 960)
+            .attr("height", 500);
+
+
+        //地理データ読み込み
+        x = d3.json(mapa, getCoor);
+
+        //地図を描画
+        function drawMaps(geojson) {
+            map.selectAll("path")
+                .data(geojson.features)
+                .enter()
+                .append("path")
+                .attr("d", path)  //パスジェネレーターを使ってd属性の値を生成している
+                .attr("class", "Estilo")
+
+            console.log(geojson.features[0].geometry.coordinates);
+        }
+
+        function getCoor(geojson) {
+
+           /* console.log(geojson.features);
+            console.log(geojson.features[0].geometry.coordinates[0][0][0]);
+            console.log(geojson.features.length)*/
+            var maxX = geojson.features[0].geometry.coordinates[0][0][0];
+            var minX = maxX;
+            var maxY = geojson.features[0].geometry.coordinates[0][0][1];
+            var minY = maxY;
+            //console.log(geojson.features[0].geometry.coordinates[0][0][0]);
+            var Barrios = [];
+            var puntos = [];
+            for (var i = 0; i < geojson.features.length; i++) {
+                var barrio = geojson.features[i].properties.Nbrhood;
+                //console.log(geojson.features[i].geometry.coordinates[0].length);
+                for (var f = 0; f < geojson.features[i].geometry.coordinates[0].length; f++) {
+                    var x = geojson.features[i].geometry.coordinates[0][f][0];
+                    var y = geojson.features[i].geometry.coordinates[0][f][1];
+                    //console.log('valor y: ' + y.toString());
+                    puntos.push(x, y);
+                    if (minX > x ) {
+                        minX = x ;
+                    }
+                    if (maxX < x)
+                    {
+                        maxX = x;
+                    }
+                    if (minY > y) {
+                        minY = y;
+                    }
+                    if (maxY < y) {
+                        maxY = y;
+                    }
+
+                }
+                Barrios.push(barrio, puntos);
+                puntos = [];
+            }
+            /*
+            console.log('val maxX:' + maxX.toString());
+            console.log('val maxY:' + maxY.toString());
+            console.log('val minY:' + minY.toString());
+            console.log('val minX:' + minX.toString());
+            */
+            console.log(Barrios);
+        }
+       
+    </script>
+</body>
+</html>

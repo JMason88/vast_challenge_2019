@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+
+    <script src="js/d3.v5.min.js"></script>
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/d3-array.v2.min.js"></script>
+    <script src="js/Globales.js"></script>
+    <script src="js/colorGradient.js"></script>
+    <script src="js/Datos.js"></script>
+    <script src="js/Mapa.js"></script>
+    <script type="text/javascript" src="js/haversineDistance.js"></script>
+
+    <script src="js/kriging.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var Archivo = "Archivos/SensoresCada1.csv";
+        var NivelesRadicacion = [50, 200, 1000, 1500];
+        var EscalaColoresNivelesRadicacion = ["#FFFF00", "#FF0000",];
+
+        loadFilesRadiacion(function () {
+
+            var med = MedicionesPorToma(1);
+
+            var t = getCol(med, "Maximo");
+            //console.log(t);
+            var x = [];//getCol(med, "x");
+            var y = [];//getCol(med, "y");;
+            //
+            var response = getColDiv(med, "Maximo", 1);
+            //console.log(t);
+            var longitudex = getColDiv(med, "x", 1);
+            var longitude = [];
+            var latitude = [];
+            var latitudey = getColDiv(med, "y", 1);;
+            for (var i = 0; i < longitudex.length; i++) {
+                var escalada = obtenerDistanciaMetros(longitudex[i], latitudey[i]);
+                x.push(escalada[0] / 111321);
+                y.push(escalada[1] / 110567);
+            }
+            console.log(x);
+            //
+            console.log(y);
+
+            var model = "exponential";
+            var sigma2 = 0, alpha = 100;
+
+            var mapa = "Mapas/StHimark.geojson";
+            var Mapa = cargarMapa(mapa, function () {
+                //
+                console.log(array3Barrios);
+                var variogram = kriging.train(t, x, y, model, sigma2, alpha);
+                kiringgrid = kriging.grid(array3Barrios, variogram, 800);
+                console.log(kiringgrid)
+                //kiringgrid = kriging.grid(array3Barrios, variogram, 800);
+                console.log('kiringgrid')
+                //console.log(kiringgrid);
+            });
+
+
+            //var xnew = -119.96665, ynew = 0.19256;   /* Pair of new coordinates to predict */;
+            //var tpredicted = kriging.predict(xnew, ynew, variogram);
+            //console.log(tpredicted);
+        }, Archivo, NivelesRadicacion,
+            EscalaColoresNivelesRadicacion);
+
+
+    </script>
+</body>
+</html>
