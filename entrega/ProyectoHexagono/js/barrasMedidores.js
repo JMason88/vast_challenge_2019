@@ -3,24 +3,25 @@ function Medidores(toma) {
     var margin = { top: 20, right: 20, bottom: 30, left: 40 };
     var canvas = d3.select("#divBarrasTomas").html("").append("svg").attr("width", 400).attr("height", 600).attr('margin', margin );
 
-    var datos = MedicionesPorToma(toma).sort(sort_by('Maximo'));;
+    var datos = MedicionesPorToma(toma).sort(sort_by('Maximo', 1));;
+    var largo = datos.length;
     var width = canvas.attr("width") - margin.left - margin.right;
+
     var height = canvas.attr("height") - margin.top - margin.bottom;
+
     var max_y = d3.max(datos, d => d["Maximo"]);
+
     var xScale = d3.scaleLinear()
-        .domain([0, datos.length])
+        .domain([0, largo ])
         .range([0, width]);
 
-    
     var yScale = d3.scaleLinear()
         .domain([0, max_y])
         .range([height, 0]);
 
     var chartGroup = canvas.append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-
-
+    
     var x_axisGroup = chartGroup.append("g")
         .attr("transform", "translate(0," + height + ")")
         .call(d3.axisBottom(xScale).ticks());
@@ -35,7 +36,7 @@ function Medidores(toma) {
         .attr("class", "bar")
         .attr("x", function (d, i) { return xScale(i); })
         .attr("y", function (d) { return yScale(d.Maximo); })
-        .attr("width", 20) //ojo, poner en realación al ancho / cantidad
+        .attr("width", width/largo) //ojo, poner en realación al ancho / cantidad
         .attr("height", function (d) { return height - yScale(d.Maximo); })
         .attr("fill", function (d) { return EscalaColor(d.Maximo); })
         .append("text")

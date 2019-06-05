@@ -106,9 +106,10 @@ function EscalaColor(valor)
         .domain([0, 2000])
         //.range(['#ffffe0', '#ffeaba', '#ffd59b', '#ffbd84', '#ffa474', '#fd8b69', '#f47461', '#e95c5a', '#db4551', '#cb2f44', '#b81b34', '#a2071f', '#8b0000']);
         //.range(['#ffffff', '#f0f0f0', '#d9d9d9', '#bdbdbd', '#969696', '#737373', '#525252', '#252525', '#000000']);  //negros by me
-        .range(['#f7f7f7', '#e9e9e9', '#dadada', '#cacaca', '#bdbdbd', '#aeaeae', '#a0a0a0', '#939393', '#858585', '#787878', '#6b6b6b', '#5e5e5e', '#525252']); //negros by Brewer
+        //.range(['#f7f7f7', '#e9e9e9', '#dadada', '#cacaca', '#bdbdbd', '#aeaeae', '#a0a0a0', '#939393', '#858585', '#787878', '#6b6b6b', '#5e5e5e', '#525252']); //negros by Brewer
         //.range(['#add8e6', '#b8dbd9', '#c2decb', '#cce1bc', '#d4e4af', '#dbe8a1', '#e1eb93', '#e7ed86', '#edf173', '#f2f463', '#f7f84f', '#fbfb36', '#ffff00']);
         //.range(['#225ea8', '#3272ae', '#4185b3', '#5196b7', '#61a5b9', '#73b3bb', '#85c1bc', '#97cdbd', '#abd8bf', '#bfe2c0', '#d3ecc3', '#e9f6c7', '#ffffcc']);
+        .range(['#e7e485', '#d1cfb3', '#bfb8cb', '#afa2da', '#9b8be8', '#8b73ee', '#795bf3', '#6142f8', '#3e23fc', '#0702ec', '#1204bd', '#1a0989', '#1a0b57']);
     return escala(valor);
 
 }

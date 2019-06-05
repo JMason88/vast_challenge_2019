@@ -122,14 +122,30 @@ function pintarSensoresYSupuestos(canvas, tmHexArista, flat, ListaSensores, Sens
         var y = ListaSensores[i].y;
         var xTransf;
         var yTransf;
-        
+
         var distancia = obtenerDistanciaMetrosEscalada(x, y, scaleX, scaleY);
         //console.log("distancia " + distancia);
         xTransf = distancia[0];
         yTransf = distancia[1];
-        Equis.push(xTransf);
-        ies.push(yTransf);
-        Valores.push(ListaSensores[i].Maximo);
+        var posX = Equis.indexOf(xTransf);
+        var coordYold = -1;
+        var valor = ListaSensores[i].Maximo;
+        if (posX > -1) {
+            coordYold = ies[posX];
+
+        }
+        
+        if (posX > -1 && coordYold == yTransf) {
+            if (valor > Valores[posX]) {
+                Valores[posX] = valor;
+            }
+        }
+        else {
+            Equis.push(xTransf);
+            ies.push(yTransf);
+
+            Valores.push(ListaSensores[i].Maximo);
+        }
         var p = Point(xTransf, yTransf);
         //var clase = 'SensorEstatico';
 
