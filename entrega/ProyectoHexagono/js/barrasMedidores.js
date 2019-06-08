@@ -1,9 +1,10 @@
 // JavaScript source code
-function Medidores(toma) {
+function Medidores(toma, Fijos = 1, Moviles = 1) {
+
     var margin = { top: 20, right: 20, bottom: 30, left: 40 };
     var canvas = d3.select("#divBarrasTomas").html("").append("svg").attr("width", 400).attr("height", 600).attr('margin', margin );
 
-    var datos = MedicionesPorToma(toma).sort(sort_by('Maximo', 1));;
+    var datos = MedicionesPorTomaYGrupo(toma, Fijos, Moviles).sort(sort_by('Maximo', 1));;
     var largo = datos.length;
     var width = canvas.attr("width") - margin.left - margin.right;
 

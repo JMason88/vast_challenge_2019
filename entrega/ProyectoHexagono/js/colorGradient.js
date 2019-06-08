@@ -122,3 +122,97 @@ for (cor in tmp) {
     $('#result_show').append("<div style='padding:8px;color:#FFF;background-color:#" + tmp[cor] + "'>COLOR " + cor + "° - #" + tmp[cor] + "</div>")
 
 }
+function PonerBarra() {
+    var margin = 25,
+        width = 600 - margin,
+        height = 60 - margin;
+
+    var colorRange = ['#e7e485', '#d1cfb3', '#bfb8cb', '#afa2da', '#9b8be8', '#8b73ee', '#795bf3', '#6142f8', '#3e23fc', '#0702ec', '#1204bd', '#1a0989', '#1a0b57']
+    var color = d3.scaleLinear().range(colorRange).domain([1, 2, 3, 4, 5,6,7,8,9,10,11,12,13]);
+
+    var svg = d3.select('body')
+        .append('svg')
+        .attr("width", width + (margin * 2))
+        .attr("height", height + (margin * 2))
+        .append("g")
+        .attr("transform", "translate(" + (margin) + "," + (margin) + ")");
+
+
+    var linearGradient = svg.append("defs")
+        .append("linearGradient")
+        .attr("id", "linear-gradient");
+
+    //.attr("gradientTransform", "rotate(45)");
+
+
+    linearGradient.append("stop")
+        .attr("offset", "0%")
+        .attr("stop-color", color(1));
+    
+
+    
+    linearGradient.append("stop")
+        .attr("offset", "8.33%")
+        .attr("stop-color", color(2));
+
+    linearGradient.append("stop")
+        .attr("offset", "16.66666667%")
+        .attr("stop-color", color(3));
+
+    linearGradient.append("stop")
+        .attr("offset", "25%")
+        .attr("stop-color", color(4));
+
+    linearGradient.append("stop")
+        .attr("offset", "33.33%")
+        .attr("stop-color", color(5));
+
+    linearGradient.append("stop")
+        .attr("offset", "41.66666667%")
+        .attr("stop-color", color(6));
+
+    linearGradient.append("stop")
+        .attr("offset", "50%")
+        .attr("stop-color", color(7));
+
+    linearGradient.append("stop")
+        .attr("offset", "58.33333333%")
+        .attr("stop-color", color(8));
+
+    linearGradient.append("stop")
+        .attr("offset", "66.66666667%")
+        .attr("stop-color", color(9));
+
+    linearGradient.append("stop")
+        .attr("offset", "75%")
+        .attr("stop-color", color(10));
+
+    linearGradient.append("stop")
+        .attr("offset", "83.33333333%")
+        .attr("stop-color", color(11));
+
+    linearGradient.append("stop")
+        .attr("offset", "91.66666667%")
+        .attr("stop-color", color(12));
+
+    linearGradient.append("stop")
+        .attr("offset", "100%")
+        .attr("stop-color", color(13));
+
+
+    svg.append("rect")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("width", width)
+        .attr("height", height)
+        .style("stroke", "black")
+        .style("stroke-width", 2)
+        .style("fill", "url(#linear-gradient)");
+
+    svg.append("text").attr("x", 0).attr("y", height + margin).attr("font-family", "sans-serif")
+        .attr("font-size", "15px")
+        .attr("fill", "blue").text("0 cpm");
+    svg.append("text").attr("x", width - margin).attr("y", height + margin).attr("font-family", "sans-serif")
+        .attr("font-size", "15px")
+        .attr("fill", "blue").text("+2000 cpm");
+}

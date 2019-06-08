@@ -8,46 +8,96 @@
 <html>
 <body>
     <link type="text/css" rel="stylesheet" href="css/Estilos.css" />
-    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css" media="screen" />
-    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap-theme.css" media="screen" />
-
+    <!--<link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap.css" media="screen" />
+    <link rel="stylesheet" href="bootstrap-3.3.7-dist/css/bootstrap-theme.css" media="screen" />-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!-- dependencies -->
+    <div class="form-group">
+        <div class="col-lg-3">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <button class="btn btn-outline-secondary" type="button" onclick="Volver()"><<</button>
+                    <input type="text" id="TiempoMoverse" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">
+                    <button class="btn btn-outline-secondary" type="button" onclick="Avanzar()">>></button>
+                </div>
 
-    <div id="divHexa"></div>
-    <div id="divBarrasTomas" style="position:absolute; left: 60%; top: 0;"></div>
+            </div>
+
+        </div>
+        <div class="form-group">
+
+            <div class="custom-control custom-radio custom-control-inline">
+                <input type="checkbox" checked id="cVerFijos" name="cVerFijos" onclick="onClickModsensores()" class="custom-control-input">
+                <label class="custom-control-label" for="cVerFijos">Utilizar Fijos</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+                <input type="checkbox" checked id="cVerMoviles" name="cVerMoviles" onclick="onClickModsensores()"
+                       class="custom-control-input">
+                <label class="custom-control-label" for="cVerMoviles">Utilizar Móviles</label>
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <div class="form-group ">
+        <div class="col-lg-12">
+            <div id="divLineas">
+
+            </div>
+
+        </div>
+        <div class="col-lg-12">
+
+            <label for="rsTiempo">Control de Avance </label>
+            <input id="rsTiempo" class="form-control-range" type="range" min="1" max="720" value="1" oninput="MostrarMomento(this.value)" onchange="ReiniciarTimer(this.value)">
+
+
+        </div>
+
+    </div>
+    <div class="row">
+        <div id="divReloj" class="col-lg-3">    </div>
+
+        <div class="custom-control custom-radio custom-control-inline">
+            <input type="checkbox" checked id="Parar" name="Parar" onclick="onClickParar()" class="custom-control-input">
+            <label id="etqParar" class="custom-control-label" for="Parar">Arrancar</label>
+        </div>
+
+    </div>
+    <div class="form-group row">
+
+        <div id="divHexa">
+
+        </div>
+
+        <div id="divHexaOtro">
+
+        </div>
+
+    </div>
+
     <div class="col-lg-12">
         <div id="divReloj" class="col-lg-1">    </div>
 
-        <div class="form-check col-lg-1">
-            <input type="checkbox" class="form-check-input" id="Parar">
-            <label class="form-check-label" for="chkStop">Parar</label>
-        </div>
-
         <div class="col-lg-10">
-
             <div class="form-group">
 
-                <input id="rsTiempo" class="form-control-range" type="range" min="1" max="720" value="1" oninput="MostrarMomento(this.value)" onchange="ReiniciarTimer(this.value)">
             </div>
-        </div>
-    </div>
-    <div class="input-group mb-3">
-        <div class="input-group-prepend">
-            <button class="btn btn-outline-secondary" type="button" onclick="Volver()"><<</button>
-            <button class="btn btn-outline-secondary" type="button" onclick="Avanzar()">>></button>
-        </div>
-        <input type="text" id="TiempoMoverse" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1">
-    </div>
 
+        </div>
+    </div>
 
 
     <script src="js/d3.v5.min.js"></script>
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/d3-array.v2.min.js"></script>
-    <script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <!--<script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>-->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
     <!--<script src="bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>-->
     <!--<script src="https://d3js.org/d3.v5.min.js"></script>-->
-
     <script src="js/kriging.js"></script>
     <script src="js/Globales.js"></script>
     <script src="js/colorGradient.js"></script>
@@ -58,20 +108,18 @@
     <script src="js/Pintar.js"></script>
     <script src="js/haversineDistance.js"></script>
     <script src="js/barrasMedidores.js"></script>
-
-
+    <script src="js/LineasMedidores.js"></script>
 
 
     <script src="js/main.js"></script>
     <!-- d3 code -->
-
 
     <script>
         /* alto= ancho*0.84*/
         //var margenes= { "top": 20, "right": 20, "button": 20, "left": 20 }
 
         Iniciar();
-
+        PonerBarra();
 
 
     </script>

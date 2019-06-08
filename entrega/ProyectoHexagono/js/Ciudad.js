@@ -1,8 +1,20 @@
 // JavaScript source code
 var prueba = [];
-var elCanvas;
-var elFlat;
-
+var elCanvasCiudad;
+var elCanvasOriginal;
+var hexLayoutciudad;
+function GetHexLayout() {
+    return hexLayoutciudad;
+}
+function GetelCanvasOriginal() {
+    return elCanvasOriginal;
+}
+function GetCanvas() {
+    return elCanvasCiudad;
+}
+function GetCanvas() {
+    return elCanvasCiudad;
+}
 function TraerBarrios(Lista) {
     var Barrios = [];
     var nombre = Lista[0][0];
@@ -30,14 +42,57 @@ function Barrio(nombre, puntos) {
     return { Nombre: nombre, Puntos: puntos }
 
 }
-function PintarContornosCiudad(canvas, tmHexArista, estiloLimite, flat, Lista) {
+function PintarContornosCiudadggg(canvas, tmHexArista, estiloLimite, flat, Lista) {
     var ciudad = TraerBarrios(Lista);
     //console.log('Pintar Bariios:');
-    
+    //$('[id^=hexaLimite]').each(function () { d3.select("#" + $(this).attr('id')).remove(); });
+
     
     //canvas.attr("margin", margenes);
     for (var i = 0; i < ciudad.length; i++) {
     var nombre = ciudad[i].Nombre;
+        var points = ciudad[i].Puntos;
+        var desde = pixel_to_hex(flat, points[0]);
+        var hexOrig = hex_round(desde);
+
+        var hasta = null;
+        var nombre = "hexaLimite";
+        for (var f = 1; f < points.length; f++) {
+            hasta = pixel_to_hex(flat, points[f]);
+            hasta = hex_round(hasta);
+
+            desde = hex_round(desde);
+            
+            var hexLinea = hex_linedraw(desde, hasta);
+            for (var ix = 0; ix < hexLinea.length; ix++) {
+                var hpActual = hex_to_pixel(flat, hexLinea[ix]);
+                /*pos = DibujarHexgono(tmHexArista, hpActual.x, hpActual.y, 's');
+                ObtenerHexagono(canvas, pos, estiloLimite);
+                */
+                
+                DibujarPoligono(canvas, polygon_corners(flat, hex_round(hexLinea[ix])), estiloLimite, nombre );
+            }
+            desde = hasta;
+        }
+        var hexLinea = hex_linedraw(hasta, hexOrig);
+        for (var ix = 0; ix < hexLinea.length; ix++) {
+
+            DibujarPoligono(canvas, polygon_corners(flat, hex_round(hexLinea[ix])), estiloLimite, nombre );
+        }
+        
+    }
+
+    
+
+}
+function PintarContornosCiudad(canvas, tmHexArista, estiloLimite, flat, Lista) {
+    var ciudad = TraerBarrios(Lista);
+    //console.log('Pintar Bariios:');
+
+
+    //canvas.attr("margin", margenes);
+    for (var i = 0; i < ciudad.length; i++) {
+        var nombre = ciudad[i].Nombre;
         var points = ciudad[i].Puntos;
         var desde = pixel_to_hex(flat, points[0]);
         var hexOrig = hex_round(desde);
@@ -55,7 +110,7 @@ function PintarContornosCiudad(canvas, tmHexArista, estiloLimite, flat, Lista) {
                 /*pos = DibujarHexgono(tmHexArista, hpActual.x, hpActual.y, 's');
                 ObtenerHexagono(canvas, pos, estiloLimite);
                 */
-                DibujarPoligono(canvas, polygon_corners(flat, hex_round( hexLinea[ix])), estiloLimite);
+                DibujarPoligono(canvas, polygon_corners(flat, hex_round(hexLinea[ix])), estiloLimite);
             }
             desde = hasta;
         }
@@ -64,10 +119,10 @@ function PintarContornosCiudad(canvas, tmHexArista, estiloLimite, flat, Lista) {
 
             DibujarPoligono(canvas, polygon_corners(flat, hex_round(hexLinea[ix])), estiloLimite);
         }
-        
+
     }
 
-    
+
 
 }
 function pintarSitosInteres(canvas, tmHexArista, flat) {
@@ -98,7 +153,7 @@ function pintarSitosInteres(canvas, tmHexArista, flat) {
         }
     }
 }
-function pintarSensoresYSupuestos(canvas, tmHexArista, flat, ListaSensores, SensoresEnHexa, SensoresEnCirculo, RemoverAnteriores) {
+function pintarSensoresYSupuestos(canvas, tmHexArista, flat, ListaSensores) {
         //console.log('Pintar Bariios:');
     //var width = canvas.attr('width');
     //var height = canvas.attr('height');
@@ -153,22 +208,17 @@ function pintarSensoresYSupuestos(canvas, tmHexArista, flat, ListaSensores, Sens
         var clase = "Sensor" + (ListaSensores[i].EsFijo == 1 ? "Estatico" : "Movil");
         //console.log(nombre);
         
-        if (SensoresEnHexa == 1) {
-            var hex = pintarHexagono(Point(xTransf, yTransf), flat, clase, nombre, canvas, ListaSensores[i].Color, RemoverAnteriores);
-            //console.log(hex);
-            hexas = hexas.filter(hexas => hexas.q != hex.q && hexas.r != hex.r && hexas.s != hex.s);
+            
+        //console.log(hex);
+        var hex = pixel_to_hex(flat, p);
             hexagonosVerdaderos.push(hex);
-        }
-        //pintarHexagono(Point(xTransf, yTransf), flat, clase, nombre, canvas, ListaSensores[i].Color, RemoverAnteriores);
-        if (SensoresEnCirculo == 1)
-            pintarCirculo(p, tmHexArista * 3, clase, nombre, canvas, ListaSensores[i].Color, RemoverAnteriores);
-        d3.select("#etq" + nombre).remove();
+        /*d3.select("#etq" + nombre).remove();
 
         canvas.append("text").attr("id", "etq" + nombre).attr("x", xTransf).attr("y", yTransf).attr("font-family", "sans-serif")
             .attr("font-size", flat.size.x * 3 + "px")
             .attr("fill", "blue")
             .text(ListaSensores[i].idSensor)
-
+            */
 
     }
     var model = "exponential";
@@ -186,7 +236,7 @@ function pintarSensoresYSupuestos(canvas, tmHexArista, flat, ListaSensores, Sens
         //var color = gradientColorDeMedicion(tnew, [400, 800, 1600], ["#FFFF00", "#FF0000"])
         var color = EscalaColor(tnew);
         //console.log(color)
-        var hex = pintarHexagono(Point(center.x, center.y), flat, "", "SensorFicticio" + Math.round(center.x) + "_" + Math.round(center.y), canvas, color, RemoverAnteriores);
+        var hex = pintarHexagono(Point(center.x, center.y), flat, "", "SensorFicticio" + Math.round(center.x) + "_" + Math.round(center.y), canvas, color, 0);
 
         //console.log(tnew);
     }
@@ -228,7 +278,8 @@ function pintarSensores(canvas, tmHexArista, flat, ListaSensores, SensoresEnHexa
             //pintarHexagono(Point(xTransf, yTransf), flat, clase, nombre, canvas, ListaSensores[i].Color, RemoverAnteriores);
         if (SensoresEnCirculo== 1)
             pintarCirculo(p, tmHexArista * 3, clase, nombre, canvas, ListaSensores[i].Color, RemoverAnteriores);
-        d3.select("#etq" + nombre).remove();
+        $('[id^=etq]').each(function () { d3.select("#" + $(this).attr('id')).remove(); });
+        //d3.select("#etq" + nombre).remove();
         
         canvas.append("text").attr("id", "etq" + nombre).attr("x", xTransf).attr("y", yTransf).attr("font-family", "sans-serif")
             .attr("font-size", flat.size.x * 3 + "px")
@@ -269,12 +320,13 @@ function SetCiudad(mapa, canvas, tmHexArista, estiloLimite, VerMapa = 1,
     qCuadriculasX = 10,
     qCuadriculasY = 10,
     iniciarTimer = 1,
-    VerSitiosinteres = 1
+    VerSitiosinteres = 1,
+    elOtroCancas
 ) {
 
    
     console.log('set siudad');
-    var Mapa = cargarMapa(mapa,
+    cargarMapa(mapa,
        function () {
         var width = canvas.attr('width');
         var margen = canvas.attr('margin');
@@ -283,18 +335,22 @@ function SetCiudad(mapa, canvas, tmHexArista, estiloLimite, VerMapa = 1,
            var prop = (MaxY ()- MinY ())/ (MaxX () - MinX());
         //console.log('width:' + width);
         var height = width * prop; //canvas.attr('height');
-        if (canvas.attr('height') < height)
-            canvas.attr('height', +height + margen * 2);
+           if (canvas.attr('height') < height) {
+               canvas.attr('height', +height + margen * 2);
+               elOtroCancas.attr('height', +height + margen * 2);
+           }
         //console.log("prop " + prop);
         scaleX = d3.scaleLinear().domain([MinX (), MaxX()]).range([margen, width]);
         scaleY = d3.scaleLinear().domain([MinY(), MaxY()]).range([height, margen]);
-        
 
         
         var canvasMod = canvas;
             var height = canvas.attr('height');
             var flat = Layout(layout_flat, Point(tmHexArista, tmHexArista), Point(width / 2, height / 2));
-            hexLayout = flat;
+           hexLayout = flat;
+           hexLayoutciudad = flat;
+           elCanvasCiudad = elOtroCancas;
+           elCanvasOriginal = canvas;
         if (VerMapa == 1) {
             var Lista = [];
             for (var i = 0; i < Barrios().length; i++) {
@@ -316,8 +372,8 @@ function SetCiudad(mapa, canvas, tmHexArista, estiloLimite, VerMapa = 1,
                PintarFondoPixel(canvas, hexLayout, "Fondo");
            if (iniciarTimer == 1)
                 InicarTimerPintar(canvas, flat, timer, SensoresEnHexa, SensoresEnCirculo, RemoverAnteriores);
-           elCanvas = canvasMod;
-           elFlat = flat;
+           
+           
            //InicarTimerPintarLinea(canvas, flat, timer, RemoverAnteriores, 20, 30);
            //InicarTimerPintarLinea(canvas, hexLayout, timer, RemoverAnteriores, dejar, mostrar) 
         console.log('Fin geojson');   
@@ -632,47 +688,46 @@ function InicarTimerPintar(canvas, hexLayout, timer, SensoresEnHexa, SensoresEnC
 
         //console.log(MedicionesEstaticosPorToma(0));
        
-    var t = d3.interval(function (elapsed) {
 
-            //console.log('enalapsed')
-            var parar = document.getElementById("Parar");
-
-            //console.log('parar', parar, parar.checked);
-            var Seguir = 1;
-            if (parar != undefined && parar.checked == true)
-                Seguir = 0;
-
-        if (Seguir == 1) {
-            PintarSupuestos(TomaActual());
-            Medidores(TomaActual());
-                AumentarToma();
-                if (TomaActual() == 1) {
-                    document.getElementById("rsTiempo").stepDown(+document.getElementById("rsTiempo").value - 1);
-                }
-                else
-                    document.getElementById("rsTiempo").stepUp(1);
-                
-            }
-        
-        }, timer);
     
 }
-function PintarSupuestos(Momento) {
+function PintarSupuestos(Momento, Fijos, Moviles) {
     
     var iToma = Momento;
     if (Momento > MaximaToma)
         Momento = MaximaToma;
     if (Momento < 1)
         Momento = 1;
-    var ListaSensores = MedicionesPorToma(iToma);
+    console.log(Momento);
+    var ListaSensores = MedicionesPorTomaYGrupo(iToma, Fijos, Moviles);
+    
     getReloj(ListaSensores[0].inicioToma);
     // console.log('Toma actual', i )
-    pintarSensoresYSupuestos(elCanvas, elFlat.size.x, elFlat, ListaSensores, 1, 0, 1);
+    pintarSensoresYSupuestos(GetCanvas(), GetHexLayout().size.x, GetHexLayout(), ListaSensores, 1, 0, 1);
+    var Lista = [];
+    for (var i = 0; i < Barrios().length; i++) {
+        Lista.push([Barrios()[i][0], scaleX(Barrios()[i][1]), scaleY(Barrios()[i][2])]);
+    }
     
-    SetearTomaAcual(Momento);
+    PintarContornosCiudad(GetCanvas(), GetHexLayout().size.x, "hexagonoLimite", GetHexLayout(), Lista);
+    //SetearTomaAcual(Momento);
 }
 
 
+function PintarSensoresMomento(Momento, Fijos, Moviles) {
+
+    var iToma = Momento;
+    if (Momento > MaximaToma)
+        Momento = MaximaToma;
+    if (Momento < 1)
+        Momento = 1;
+    console.log(Momento);
+    var ListaSensores = MedicionesPorTomaYGrupo(iToma, Fijos, Moviles);
+
+   // getReloj(ListaSensores[0].inicioToma);
+    // console.log('Toma actual', i )
+    pintarSensores(GetelCanvasOriginal(), GetHexLayout().size.x, GetHexLayout(), ListaSensores, 1, 0, 1);
+    }
 
 
 /*var Lista = [];

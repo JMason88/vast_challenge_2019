@@ -1,25 +1,28 @@
 var MedicionesEstaticos = [];
+var Agrupados = [];
 var NivelesRadicacion;
 var EscalaColoresNivelesRadicacion;
 var tomaActual = 1;
 var MaxToma = 0;
 var minFecha;
 var intervalo; 
-function loadFilesRadiacion(fnIncio, Archivo, lNivelesRadicacion, lEscalaColoresNivelesRadicacion)
-{
+function loadFilesRadiacion(fnIncio, Archivo, lNivelesRadicacion, lEscalaColoresNivelesRadicacion) {
     NivelesRadicacion = lNivelesRadicacion;
     EscalaColoresNivelesRadicacion = lEscalaColoresNivelesRadicacion;
+    d3.csv("Archivos/SensoresAgrupados.csv", function (data) {
+        Agrupados.push(data);
+    }).then(
+        d3.csv(Archivo, function (data) {
+            MedicionesEstaticos.push(conversor(data));
 
-    d3.csv(Archivo, function (data) {
-        MedicionesEstaticos.push(conversor(data));
-        
-    }).then(function () {
-        MaxToma = +maxDato("idToma");
-        minFecha = minDato("inicioToma");
-        intervalo = +maxDato("duracionIntervalo");
-        fnIncio();
-        
-    });
+        }).then(function () {
+            MaxToma = +maxDato("idToma");
+            minFecha = minDato("iniciotoma");
+            intervalo = +maxDato("duracionIntervalo");
+            fnIncio();
+
+        })
+    );
     
 }
 function conversor(d) {
@@ -29,8 +32,8 @@ function conversor(d) {
     d.inicioToma = new Date(d.inicioToma);
     d.x = +d.x;
     d.y = +d.y;
-    d.Color = ColorDeMedicion(+d.Maximo);
-    d.NombreSensor = (d.EsFijo == 1 ? 'Fijo' : 'Movil') + (d.idSensor);
+    d.Color = EscalaColor(+d.Maximo);
+    d.NombreSensor = (d.EsFijo == 1 ? 'Fijo' : 'Movil') + d.idSensor;
     //d.Opacidad = 0;
     
     return d;
@@ -66,13 +69,68 @@ function MedicionesPorToma(numToma) {
      
     return arrPorToma;
 }
+function AgrupadosGrupo(Fijos = 1, Moviles = 1) {
+
+    var VerQue = -1;
+    if (Fijos == 1) {
+        VerQue = 1;
+    }
+    if (Moviles == 1) {
+        VerQue = 0;
+    }
+    var arrPorToma = Agrupados.filter(Fijos === Moviles || Agrupados.EsFijo === VerQue);
+
+    return arrPorToma;
+}
+function MedicionesPorTomaYGrupo(numToma, Fijos = 1, Moviles = 1) {
+
+    var VerQue = -1;
+    if (Fijos == 1) {
+        VerQue = 1;
+    }
+    if (Moviles == 1) {
+        VerQue = 0;
+    }
+    var arrPorToma = MedicionesEstaticos.filter(MedicionesEstaticos => MedicionesEstaticos.idToma == numToma &&
+        (Fijos == Moviles  || MedicionesEstaticos.EsFijo == VerQue ));
+
+    return arrPorToma;
+}
+
+function MedicionesConLimiteMaximo(Max, Fijos, Moviles) {
+    var VerQue = -1;
+    if (Fijos == 1) {
+        VerQue = 1;
+    }
+    if (Moviles == 1) {
+        VerQue = 0;
+    }
+    var arrPorToma = MedicionesEstaticos.filter(MedicionesEstaticos => MedicionesEstaticos.Maximo <= Max &&
+        (Fijos == Moviles || MedicionesEstaticos.EsFijo == VerQue));
+
+    return arrPorToma;
+}
 function MedicionesEstaticosPorToma(numToma) {
 
     var arrPorToma = MedicionesEstaticos.filter(MedicionesEstaticos => MedicionesEstaticos.idToma == numToma && MedicionesEstaticos.EsFijo == 1 );
 
     return arrPorToma;
 }
+function AgrupadosTipo(Fijos) {
 
+    var arrPorToma = MedicionesEstaticos.filter(MedicionesEstaticos => MedicionesEstaticos.idToma == numToma && MedicionesEstaticos.EsFijo == 1);
+
+    return arrPorToma;
+}
+const distinto = (valor, indice, self) => {
+    return self.indexOf(valor) === indice;
+}
+
+function Sensores() { 
+    var sensores = getCol(MedicionesEstaticos, "NombreSensor");
+    return sensores.filter(distinto);
+    //MedicionesEstaticos.filter(MedicionesEstaticos => MedicionesEstaticos.Nom == numToma && MedicionesEstaticos.EsFijo == 1);
+    }
 function MedicionesMovilesPorSeriedeTomas(numTomaDesde, numTomaHasta ) {
     var arrPorToma = MedicionesEstaticos.filter(MedicionesEstaticos => MedicionesEstaticos.idToma >= numTomaDesde && MedicionesEstaticos.idToma <= numTomaHasta && MedicionesEstaticos.EsFijo == 0).sort(sort_by('idSensor', 1, parseInt));
     return arrPorToma;
@@ -106,6 +164,10 @@ function AumentarToma() {
         tomaActual = 1;   
 }
 function SetearTomaAcual(Toma) {
+    if (Toma< 1)
+        Toma = 1;
+    if (Toma > MaximaToma() )
+        Toma = MaximaToma() ;
     tomaActual = Toma;
     
 }

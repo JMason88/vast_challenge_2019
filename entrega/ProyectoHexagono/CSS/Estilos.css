@@ -1,7 +1,7 @@
 ﻿.hexagonoLimite {
     fill: transparent;
 
-    stroke: #d0c4c4;
+    stroke: black;
     stroke-width: 1;
     stroke-opacity: 1;
 }
@@ -46,4 +46,33 @@
     stroke: black;
     stroke-opacity: 0.4;
     stroke-width: 1;
+}
+.line {
+    fill: none;
+    stroke: #ffab00;
+    stroke-width: 3;
+}
+
+.overlay {
+    fill: none;
+    pointer-events: all;
+}
+
+/* Style the dots by assigning a fill and stroke */
+.dot {
+    fill: #ffab00;
+    stroke: #fff;
+}
+
+.focus circle {
+    fill: none;
+    stroke: steelblue;
+}
+.line {
+    stroke-width: 2;
+    fill: none;
+}
+
+.axis path {
+    stroke: black;
 }

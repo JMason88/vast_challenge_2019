@@ -1,41 +1,53 @@
 //https://www.tutorialspoint.com/d3js/d3js_array_api.htm
+var timer = 1000;
 function Graficar() {
 
     // console.log('setciudad hhhh');
     $(document).ready(function () {
         //"Archivos/SensoresCada10.csv"
         var canvas = d3.select("#divHexa").html("").append("svg").attr("width", 800).attr("height", 80).attr('margin', 20);
+        var canvasOtro = d3.select("#divHexaOtro").html("").append("svg").attr("width", 800).attr("height", 80).attr('margin', 20);
         var mapa = "Mapas/StHimark.geojson";
-        var tmHexArista=9;
+
+        var tmHexArista = 9;
         var estiloLimite = "hexagonoLimite";
-        var VerMapa = 0;
+        var VerMapa = 1;
         var VerAxis = 0;
         var VerFondo = 0;
         var SensoresEnHexa = 1;
         var SensoresEnCirculo = 0;
         var RemoverAnteriores = 1;
-        var timer = 1000;
+
         var qCuadriculasX = 9;
         var qCuadriculasY = 6;
         var verSitios = 1;
         var iniciarTimer = 1;
-        iniciarControles();
+
         //console.log(mapa, largoPoligono);
-        SetCiudad(mapa, canvas, tmHexArista, estiloLimite, VerMapa ,
-            VerAxis ,
-            VerFondo ,
-            SensoresEnHexa ,
-            SensoresEnCirculo ,
-            RemoverAnteriores ,
-            timer ,
-            qCuadriculasX ,
+        SetCiudad(mapa, canvas, tmHexArista, estiloLimite, VerMapa,
+            VerAxis,
+            VerFondo,
+            SensoresEnHexa,
+            SensoresEnCirculo,
+            RemoverAnteriores,
+            timer,
+            qCuadriculasX,
             qCuadriculasY,
             iniciarTimer,
-            verSitios
+            verSitios,
+            canvasOtro
         );
+        ;
+        iniciarControles();
+        var barra = document.getElementById("rsTiempo");
+        console.log("barra", barra);
+        //MedidoresLinea(10000);
+        //console.log(Sensores());
         //InicarTimerPintar(canvas, flat, timer, SensoresEnHexa, SensoresEnCirculo, RemoverAnteriores);
         //BarrasYEstrellas (1);
-        Medidores(1);
+        //Pintar(1);
+        //LineaTres(1,1);
+        LineaTres(1, 1);
     }
     );
 
@@ -101,53 +113,112 @@ function HexagonosBosteros(anchoSvg = 1000, altoSvg = 600, canvas = null, lado =
 function iniciarControles() {
     //console.log($("#rsTiempo"));
     document.getElementById("rsTiempo").max = MaximaToma();
+    var t = d3.interval(function (elapsed) {
+
+        //console.log('enalapsed')
+        var parar = document.getElementById("Parar");
+        //console.log('parar', parar, parar.checked);
+        var Seguir = 1;
+        if (parar != undefined && parar.checked == true)
+            Seguir = 0;
+
+        if (Seguir == 1) {
+
+            Pintar(TomaActual() + 1);
+        }
+
+    }, timer);
+
 }
 function MostrarMomento(momento) {
-    var parar = document.getElementById("Parar");
-
-    if (parar != undefined)
-        parar.checked = true;
-    
-    SetearTomaAcual(momento);
+    MarcarParar(true);
+    console.log(momento);
+    SetearTomaAcual(+momento);
     var ListaSensores = MedicionesPorToma(momento);
-    
-    getReloj(ListaSensores[0].inicioToma);
-    console.log('pasa por mostrar momento')
+    console.log(ListaSensores[0].inicioToma);
+    //getReloj(ListaSensores[0].inicioToma);
+    //console.log('pasa por mostrar momento')
+
     
 
 }
-function ReiniciarTimer(momento) {
+
+function onClickModsensores() {
+    var cverFijos = document.getElementById("cVerFijos");
+    var cverMoviles = document.getElementById("cVerMoviles");
+    console.log("sensores click");
+    var verFijos = 1;
+    var verMoviles = 1;
+    if (cverFijos != undefined && !cverFijos.checked)
+        verFijos = 0;
+    if (cverMoviles != undefined && !cverMoviles.checked)
+        verMoviles = 0;
+    LineaTres(verFijos, verMoviles);
+
+
+}
+function onClickParar() {
     var parar = document.getElementById("Parar");
-    if (parar != undefined)
-        parar.checked = true;
-    PintarSupuestos(momento);
-    Medidores(momento);
-    console.log('pasa por reiniciar')
+
+    MarcarParar(parar.checked )
+
+
+}
+function MarcarParar(Parar = true) {
+    var parar = document.getElementById("Parar");
+    if (parar != undefined) {
+        parar.checked = Parar;
+        var etqparar = document.getElementById("etqParar");
+        etqparar.innerHTML = Parar ? 'Arrancar' : 'Parar';
+    }
+}
+function ReiniciarTimer(momento) {
+    MarcarParar(true);
+    Pintar(+momento);
+    //console.log('pasa por reiniciar')
     
 
 }
 function Avanzar() {
-    var parar = document.getElementById("Parar");
-    if (parar != undefined)
-        parar.checked = true;
+    MarcarParar(true);
 
     var momentoActual = TomaActual();
-    var momento = + document.getElementById("TiempoMoverse").value;
+    var momento = +document.getElementById("TiempoMoverse").value;
     momentoActual = momentoActual + momento;
-    PintarSupuestos(momentoActual);
-    Medidores(momentoActual);
-    document.getElementById("rsTiempo").value = TomaActual();
+    Pintar(momentoActual);
+    
 }
 function Volver() {
 
-    var parar = document.getElementById("Parar");
-    if (parar != undefined)
-        parar.checked = true;
+    MarcarParar(true);
     var momentoActual = TomaActual();
-    var momento = + document.getElementById("TiempoMoverse").value;
+    var momento = +document.getElementById("TiempoMoverse").value;
     momentoActual = momentoActual - momento;
-    PintarSupuestos(momentoActual);
+    Pintar(momentoActual);
+    
+    
+}
+function Pintar(Toma=-1)
+{
+    console.log('pintar');  
+    var cverFijos = document.getElementById("cVerFijos");
+    var cverMoviles = document.getElementById("cVerMoviles");
+
+    var verFijos = 1;
+    var verMoviles = 1;
+    if (cverFijos != undefined && !cverFijos.checked )
+        verFijos = 0;
+    if (cverMoviles != undefined && !cverMoviles.checked )
+        verMoviles = 0;
+    SetearTomaAcual(Toma);
+    PintarSupuestos(Toma, verFijos, verMoviles);
+    PintarSensoresMomento(Toma, verFijos, verMoviles);
+    //Medidores(Toma, verFijos, verMoviles);
+    
+     
+
     document.getElementById("rsTiempo").value = TomaActual();
-    Medidores(momentoActual);
+    
+
 }
 //TiangulosBosteros();
