@@ -59,6 +59,7 @@ function drawCanvas () {
   .attr("height", function(d) {return height - yScale(d.Value);});
 
   console.log(allData.length);
+  document.getElementById('timestamp').innerHTML = getTs(1);
     // Listen to the slider?
     d3.select("#mySlider").on("change", function(d){
         selectedValue = this.value;
