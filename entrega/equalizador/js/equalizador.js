@@ -12,7 +12,7 @@ function drawCanvas () {
     barsPlot
         .data(data)
         .transition()
-        .duration(1000)
+        .duration(500)
         .attr("x", function(d) { return xScale(d.name);})
         .attr("y", function(d) {return yScale(d.Value);})
         .attr("width", xScale.bandwidth())
@@ -35,7 +35,7 @@ function drawCanvas () {
 
  // var max_y = d3.max(allData, function(d) {return d.Value;});
 //  var yScale = d3.scaleLinear().domain([0,max_y]).range([height,0]);
-  var yScale = d3.scaleLinear().domain([0,1200]).range([height,0]);
+  var yScale = d3.scaleLinear().domain([0,500]).range([height,0]);
   
   var chartGroup = canvas.append("g").attr("transform","translate(" + margin.left + "," + margin.top + ") ");
 

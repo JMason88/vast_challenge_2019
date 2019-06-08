@@ -85,6 +85,7 @@ function PintarContornosCiudadggg(canvas, tmHexArista, estiloLimite, flat, Lista
     
 
 }
+
 function PintarContornosCiudad(canvas, tmHexArista, estiloLimite, flat, Lista) {
     var ciudad = TraerBarrios(Lista);
     //console.log('Pintar Bariios:');
@@ -252,7 +253,8 @@ function pintarSensores(canvas, tmHexArista, flat, ListaSensores, SensoresEnHexa
     //console.log("pintarSensores")
     //console.log(ListaSensores.x);
     //var flat = Layout(layout_flat, Point(tmHexArista, tmHexArista), Point(width / 2, height / 2));
-    
+    $('[id^=etqSensor]').each(function () { d3.select("#" + $(this).attr('id')).remove(); });
+
     for (var i = 0; i < ListaSensores.length; i++) {
         
 
